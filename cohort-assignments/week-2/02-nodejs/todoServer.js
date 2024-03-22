@@ -39,11 +39,57 @@
 
   Testing the server - run `npm run test-todoServer` command in terminal
  */
-  const express = require('express');
-  const bodyParser = require('body-parser');
-  
-  const app = express();
-  
-  app.use(bodyParser.json());
-  
-  module.exports = app;
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+let todosList = [{
+  id: 1,
+  todo: {
+    todoTitle: "eating",
+    todoDiscriptions: "eating apple",
+  }
+}, {
+  id: 2,
+  todo: {
+    todoTitle: "eating",
+    todoDiscriptions: "eating apple",
+  }
+}]
+
+let genratId = 1
+app.use(bodyParser.json());
+
+app.get("/todos", (req, res) => {
+  res.status(200).json({ todosList })
+})
+
+app.get("/todos/:id", (req, res) => {
+  const todoId = parseInt(req.params.id);
+  const todo = todosList.find(todo => todo.id === todoId)
+  if (todo) {
+    res.status(200).json(todo)
+  } else {
+    res.status(404).json({ err: "todo is not there , wronge id" })
+  }
+})
+
+app.post('/todos', (req, res) => {
+  const newtodo = {
+    id: Math.floor(Math.random() * 100000),
+    title: req.body.title,
+    description: req.body.description
+  }
+
+  todosList.push(newtodo);
+  res.status(201).json(newtodo);
+})
+
+app.put('/todos/:id', (req, res) => {
+
+})
+
+app.delete('/todos/:id', (req, res) => {
+
+})
+app.listen(4000)
+module.exports = app;
