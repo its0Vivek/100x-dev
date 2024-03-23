@@ -42,25 +42,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-let todosList = [{
-  id: 1,
-  todo: {
-    todoTitle: "eating",
-    todoDiscriptions: "eating apple",
-  }
-}, {
-  id: 2,
-  todo: {
-    todoTitle: "eating",
-    todoDiscriptions: "eating apple",
-  }
-}]
+let todosList = []
 
-let genratId = 1
 app.use(bodyParser.json());
 
 app.get("/todos", (req, res) => {
-  res.status(200).json({ todosList })
+  res.status(200).json(todosList)
 })
 
 app.get("/todos/:id", (req, res) => {
@@ -85,11 +72,27 @@ app.post('/todos', (req, res) => {
 })
 
 app.put('/todos/:id', (req, res) => {
+  const putTodos = parseInt(req.params.id)
+  const todoIndex = todosList.find(todo => todo.id === putTodos)
 
+  if (!todoIndex === -1) {
+    todosList[todoIndex].title = req.params.title;
+    todosList[todoIndex].description = req.params.description;
+    res.status(201).json(todoIndex)
+  } else {
+    res.status(404).send();
+  }
 })
 
 app.delete('/todos/:id', (req, res) => {
-
+  const putTodos = parseInt(req.params.id)
+  const todoIndex = todosList.find(todo => todo.id === putTodos)
+  if (!todoIndex === -1) {
+    todosList.splice(todoIndex, 1);
+    res.status(201).send();
+  } else {
+    res.status(404).send();
+  }
 })
 app.listen(4000)
 module.exports = app;
