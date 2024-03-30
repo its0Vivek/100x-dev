@@ -13,7 +13,7 @@ const schema1 = zod.object({
 app.use(express.json());
 app.use(cors())
 
-app.post("/health-checkup", function (req, res) {
+app.post("/health-checkup", function (err, req, res) {
     const kidneys = req.body.kidneys;
     const response = schema.safeParse(kidneys)
 

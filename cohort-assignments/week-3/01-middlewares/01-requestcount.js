@@ -16,7 +16,6 @@ function userMiddleware(req, res, next) {
 }
 
 
-
 app.use(userMiddleware)
 
 app.get('/user', function (req, res) {
